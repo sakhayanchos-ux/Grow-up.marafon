@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Марафон Grow Up · Сахаяна</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #BADBEA;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      padding: 16px 8px 40px;
+      color: #1e1e2a;
+      line-height: 1.3;
+    }
+    .container { max-width: 100%; }
+    h1 { font-size: 1.7rem; font-weight: 600; margin-bottom: 4px; color: #1e293b; }
+    .subhead { color: #2c3e50; margin-bottom: 12px; border-left: 4px solid #FD95AC; padding-left: 12px; font-size: 0.9rem; }
+    
+    .info-card {
+      background: white; border-radius: 20px; padding: 14px; margin-bottom: 12px;
+      border: 1px solid #EFDDD9;
+    }
+    .info-row { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; }
+    .info-item { display: flex; align-items: baseline; gap: 6px; }
+    .info-label { font-weight: 600; color: #334155; font-size: 0.85rem; }
+    input, select { padding: 6px 10px; border: 1px solid #EFDDD9; border-radius: 14px; font-size: 0.85rem; background: white; }
+    input:focus, select:focus { border-color: #FD95AC; outline: none; }
+    
+    .table-container { overflow-x: auto; margin-bottom: 16px; border-radius: 20px; border: 1px solid #EFDDD9; background: white; }
+    table { border-collapse: collapse; font-size: 0.7rem; background: white; width: max-content; min-width: 100%; }
+    th { background: #FD95AC; color: white; padding: 10px 4px; font-weight: 600; text-align: center; white-space: nowrap; }
+    td { padding: 8px 4px; border-bottom: 1px solid #EFDDD9; text-align: center; vertical-align: middle; background: white; }
+    .sticky-col { position: sticky; left: 0; background: white; z-index: 2; box-shadow: 2px 0 5px -2px rgba(0,0,0,0.1); }
+    th.sticky-col { background: #FD95AC; z-index: 3; }
+    .date-col { font-weight: 600; }
+    .day-col { font-weight: 500; }
+    input[type="checkbox"] { width: 18px; height: 18px; accent-color: #FD95AC; }
+    input[type="number"] { width: 55px; padding: 4px; text-align: center; border: 1px solid #EFDDD9; border-radius: 10px; }
+    
+    .contest-info {
+      background: #EFDDD9; padding: 12px 14px; border-radius: 20px; margin: 12px 0;
+      border-left: 5px solid #FD95AC;
+    }
+    .contest-info p { margin-bottom: 4px; font-size: 0.85rem; }
+    .wa-link { color: #1e293b; font-weight: 600; text-decoration: none; background: white; padding: 4px 12px; border-radius: 30px; display: inline-block; margin-top: 4px; }
+    
+    .total-box {
+      background: #FD95AC; color: white; padding: 14px 16px; border-radius: 30px;
+      text-align: center; margin: 16px 0;
+    }
+    .total-label { font-size: 0.9rem; opacity: 0.9; }
+    .total-value { font-size: 2.8rem; font-weight: 800; line-height: 1.2; }
+    
+    .btn-group { display: flex; gap: 8px; margin: 12px 0; flex-wrap: wrap; }
+    .btn {
+      background: white; border: 1px solid #FD95AC; color: #FD95AC; padding: 10px 12px;
+      border-radius: 40px; font-weight: 600; cursor: pointer; flex: 1; font-size: 0.8rem;
+    }
+    .btn-primary { background: #FD95AC; color: white; border: none; }
+    
+    .footer { margin-top: 16px; text-align: right; font-size: 1rem; font-weight: 600; color: #FD95AC; }
+    .note { font-size: 0.7rem; color: #5b6b7c; margin: 8px 0; text-align: center; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>🌺 МАРАФОН «GROW UP»</h1>
+  <div class="subhead">Дата 22.04 – 03.05</div>
+
+  <!-- ДАННЫЕ УЧАСТНИКА -->
+  <div class="info-card">
+    <div class="info-row">
+      <div class="info-item"><span class="info-label">👤 Имя</span>
+        <input type="text" id="participantName" placeholder="Имя участника" style="width:130px;">
+      </div>
+      <div class="info-item"><span class="info-label">👩‍💼 Консультант</span>
+        <input type="text" id="consultantName" placeholder="Имя консультанта" style="width:140px;">
+      </div>
+    </div>
+    <div class="info-row">
+      <div class="info-item"><span class="info-label">💰 Скидка</span>
+        <input type="text" id="discount" placeholder="%" style="width:70px;">
+      </div>
+      <div class="info-item"><span class="info-label">🎯 Цель</span>
+        <select id="goal">
+          <option value="Похудеть">Похудеть</option>
+          <option value="Энергия">Энергия</option>
+          <option value="Здоровье">Здоровье</option>
+          <option value="Другое">Другое</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- ТАБЛИЦА С ЗАКРЕПЛЁННЫМИ ДАТОЙ И ДНЁМ -->
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th class="sticky-col">📅 Дата</th>
+          <th class="sticky-col" style="left: 65px;">День</th>
+          <th>1 VP<br>= 1🌺</th>
+          <th>Ужин с ВК<br>5🌺</th>
+          <th>Бьюти<br>5🌺</th>
+          <th>Сторис<br>5🌺</th>
+          <th>ШП/ВВ/АУ<br>10🌺</th>
+          <th>Друг на ШП<br>10🌺</th>
+          <th>Завтрак в парке<br>20🌺</th>
+          <th>День клиента<br>30🌺</th>
+          <th>Друг на ДК<br>30🌺</th>
+          <th>Друг на чек-ап<br>30🌺</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+  <div class="note">*ШП - школа питания 
+ВВ - встреча возможностей 
+АУ - академия успеха 
+ДК - день клиента 
+                                                   | ⬅️➡️ Листай таблицу вправо — дата и день останутся на месте! |</div>
+
+  <!-- КОНКУРС КОЛЛАЖЕЙ -->
+  <div class="contest-info">
+    <p style="font-weight:700;">📸 Конкурс «Лучший коллаж До и После»</p>
+    <p>Если хотите участвовать
+отправь фото «До» 
+до 24 апреля по ссылке:</p>
+    <a href="https://wa.me/79247611616" target="_blank" class="wa-link">📞 Написать в WhatsApp Виктория</a>
+    <p style="margin-top:8px;">🥇 1 место — 3000 ₽ &nbsp;|&nbsp; 🥈 2 место — 2000 ₽ &nbsp;|&nbsp; 
+🥉 3 место — 1000 ₽</p>
+  </div>
+
+  <!-- ИТОГО -->
+  <div class="total-box">
+    <div class="total-label">🌺 ВСЕГО ЦВЕТОЧКОВ</div>
+    <div class="total-value" id="totalPoints">0</div>
+  </div>
+
+  <!-- КНОПКИ -->
+  <div class="btn-group">
+    <button class="btn btn-primary" id="saveBtn">💾 Сохранить</button>
+    <button class="btn" id="loadBtn">📂 Загрузить</button>
+    <button class="btn" id="resetBtn">🔄 Новый участник</button>
+  </div>
+
+  <div class="footer">Разбогатей 🚀</div>
+</div>
+
+<script>
+  (function(){
+    const STORAGE_KEY = 'growup_marathon_v2';
+    
+    const dates = ['22.04', '23.04', '24.04', '25.04', '26.04', '27.04', '28.04', '29.04', '30.04', '01.05', '02.05', '03.05'];
+    const days = ['Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+    
+    // Структура строки: [vp, ужин(bool), бьюти(bool), сторис(число), шп(bool), другШП(число), завтрак(bool), дк(bool), другДК(число), другЧек(число)]
+    let tableData = [];
+    
+    const nameInput = document.getElementById('participantName');
+    const consultantInput = document.getElementById('consultantName');
+    const discountInput = document.getElementById('discount');
+    const goalSelect = document.getElementById('goal');
+    const totalSpan = document.getElementById('totalPoints');
+    
+    function initTableData() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if(saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          if(parsed.table && parsed.table.length === 12) tableData = parsed.table;
+          else tableData = Array(12).fill().map(() => ['', false, false, 0, false, 0, false, false, 0, 0]);
+          nameInput.value = parsed.name || '';
+          consultantInput.value = parsed.consultant || '';
+          discountInput.value = parsed.discount || '';
+          goalSelect.value = parsed.goal || 'Похудеть';
+        } catch(e){ tableData = Array(12).fill().map(() => ['', false, false, 0, false, 0, false, false, 0, 0]); }
+      } else {
+        tableData = Array(12).fill().map(() => ['', false, false, 0, false, 0, false, false, 0, 0]);
+      }
+    }
+    
+    function renderTable() {
+      const tbody = document.getElementById('tableBody');
+      let html = '';
+      for(let i=0; i<12; i++) {
+        const row = tableData[i];
+        html += `<tr>`;
+        html += `<td class="sticky-col date-col">${dates[i]}</td>`;
+        html += `<td class="sticky-col day-col" style="left:65px;">${days[i]}</td>`;
+        // VP
+        html += `<td><input type="number" min="0" class="vp-input" data-day="${i}" value="${row[0] || ''}" placeholder="0"></td>`;
+        // Ужин
+        html += `<td><input type="checkbox" class="task-check" data-day="${i}" data-field="dinner" ${row[1] ? 'checked' : ''}></td>`;
+        // Бьюти
+        html += `<td><input type="checkbox" class="task-check" data-day="${i}" data-field="beauty" ${row[2] ? 'checked' : ''}></td>`;
+        // Сторис (число)
+        html += `<td><input type="number" min="0" class="stories-input" data-day="${i}" value="${row[3] || 0}"></td>`;
+        // ШП/ВВ/АУ
+        html += `<td><input type="checkbox" class="task-check" data-day="${i}" data-field="shp" ${row[4] ? 'checked' : ''}></td>`;
+        // Друг на ШП (число)
+        html += `<td><input type="number" min="0" class="friend-shp-input" data-day="${i}" value="${row[5] || 0}"></td>`;
+        // Завтрак в парке
+        html += `<td><input type="checkbox" class="task-check" data-day="${i}" data-field="breakfast" ${row[6] ? 'checked' : ''}></td>`;
+        // День клиента
+        html += `<td><input type="checkbox" class="task-check" data-day="${i}" data-field="dk" ${row[7] ? 'checked' : ''}></td>`;
+        // Друг на ДК (число)
+        html += `<td><input type="number" min="0" class="friend-dk-input" data-day="${i}" value="${row[8] || 0}"></td>`;
+        // Друг на чек-ап (число)
+        html += `<td><input type="number" min="0" class="friend-check-input" data-day="${i}" value="${row[9] || 0}"></td>`;
+        html += `</tr>`;
+      }
+      tbody.innerHTML = html;
+      calculateTotal();
+    }
+    
+    function calculateTotal() {
+      let total = 0;
+      for(let i=0; i<12; i++) {
+        const vp = parseInt(document.querySelector(`.vp-input[data-day="${i}"]`)?.value) || 0;
+        tableData[i][0] = vp;
+        total += vp;
+        
+        const dinner = document.querySelector(`.task-check[data-day="${i}"][data-field="dinner"]`)?.checked || false;
+        tableData[i][1] = dinner;
+        if(dinner) total += 5;
+        
+        const beauty = document.querySelector(`.task-check[data-day="${i}"][data-field="beauty"]`)?.checked || false;
+        tableData[i][2] = beauty;
+        if(beauty) total += 5;
+        
+        const stories = parseInt(document.querySelector(`.stories-input[data-day="${i}"]`)?.value) || 0;
+        tableData[i][3] = stories;
+        total += stories * 5;
+        
+        const shp = document.querySelector(`.task-check[data-day="${i}"][data-field="shp"]`)?.checked || false;
+        tableData[i][4] = shp;
+        if(shp) total += 10;
+        
+        const friendShp = parseInt(document.querySelector(`.friend-shp-input[data-day="${i}"]`)?.value) || 0;
+        tableData[i][5] = friendShp;
+        total += friendShp * 10;
+        
+        const breakfast = document.querySelector(`.task-check[data-day="${i}"][data-field="breakfast"]`)?.checked || false;
+        tableData[i][6] = breakfast;
+        if(breakfast) total += 20;
+        
+        const dk = document.querySelector(`.task-check[data-day="${i}"][data-field="dk"]`)?.checked || false;
+        tableData[i][7] = dk;
+        if(dk) total += 30;
+        
+        const friendDk = parseInt(document.querySelector(`.friend-dk-input[data-day="${i}"]`)?.value) || 0;
+        tableData[i][8] = friendDk;
+        total += friendDk * 30;
+        
+        const friendCheck = parseInt(document.querySelector(`.friend-check-input[data-day="${i}"]`)?.value) || 0;
+        tableData[i][9] = friendCheck;
+        total += friendCheck * 30;
+      }
+      totalSpan.textContent = total;
+    }
+    
+    function saveData() {
+      calculateTotal();
+      const data = {
+        name: nameInput.value,
+        consultant: consultantInput.value,
+        discount: discountInput.value,
+        goal: goalSelect.value,
+        table: tableData
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      alert('✅ Данные сохранены!');
+    }
+    
+    function loadData() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if(saved) {
+        const data = JSON.parse(saved);
+        nameInput.value = data.name || '';
+        consultantInput.value = data.consultant || '';
+        discountInput.value = data.discount || '';
+        goalSelect.value = data.goal || 'Похудеть';
+        tableData = data.table || Array(12).fill().map(() => ['', false, false, 0, false, 0, false, false, 0, 0]);
+        renderTable();
+        alert('✅ Данные загружены!');
+      } else {
+        alert('Нет сохранённых данных');
+      }
+    }
+    
+    function resetForNew() {
+      if(confirm('Начать нового участника? Все данные сбросятся.')) {
+        nameInput.value = '';
+        consultantInput.value = '';
+        discountInput.value = '';
+        goalSelect.value = 'Похудеть';
+        tableData = Array(12).fill().map(() => ['', false, false, 0, false, 0, false, false, 0, 0]);
+        renderTable();
+      }
+    }
+    
+    function bindEvents() {
+      document.addEventListener('input', calculateTotal);
+      document.addEventListener('change', calculateTotal);
+      document.getElementById('saveBtn').addEventListener('click', saveData);
+      document.getElementById('loadBtn').addEventListener('click', loadData);
+      document.getElementById('resetBtn').addEventListener('click', resetForNew);
+    }
+    
+    initTableData();
+    renderTable();
+    bindEvents();
+  })();
+</script>
+</body>
+</html>
